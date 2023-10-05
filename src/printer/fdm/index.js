@@ -50,7 +50,13 @@ const buildRouteTitle = (titleItems) => buildTitle([
 let currentModule = dashboard;
 const fdm = {
   routes: [
-    {
+    process.env.WITH_TIMELAPSES ? {
+      path: "timelapses",
+      html: require("../../views/timelapses.html"),
+      module: updatePrinterTitle(dashboard),
+      getTitle: () => translate("home.timelapses"),
+    }: null
+      ,{
       path: "dashboard",
       html: require("../../views/dashboard.html"),
       module: updatePrinterTitle(dashboard),
