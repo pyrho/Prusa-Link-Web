@@ -37,26 +37,25 @@ const createApiKey = (resolve) => {
  * Show modal and ask the api key
  * @param {function} cb
  */
-export const askApiKey = () =>
-  new Promise((resolve, reject) => {
-    modal(createApiKey(resolve), {
-      timeout: 0,
-      closeOutside: false,
-    });
-  }).then((apiKey) => sessionStorage.setItem("apiKey", apiKey));
+export const askApiKey = () => {
+  if (localStorage.getItem("auth") === "true") return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    modal(createApiKey(resolve), { timeout: 0, closeOutside: false });
+  }).then((apiKey) => localStorage.setItem("apiKey", apiKey));
+};
 
 /**
  * Create the readers with apiKey if exist and Accept keys
  * @param {string?} accept Accept header, default is `application/json`
  */
 const getHeaders = (accept = "application/json") => {
-  if (sessionStorage.getItem("authType") == "ApiKey") {
+  if (localStorage.getItem("authType") == "ApiKey") {
     return {
-      "X-Api-Key": sessionStorage.getItem("apiKey"),
+      "X-Api-Key": localStorage.getItem("apiKey"),
       Accept: accept,
     };
   }
-  return { Accept: accept, Authorization: sessionStorage.getItem("authHeader") };
+  return { Accept: accept, Authorization: localStorage.getItem("authHeader") };
 };
 
 /**
@@ -66,8 +65,8 @@ const setUpAuth = () =>
   askApiKey().then(
     () =>
       new Promise(async (resolve) => {
-        sessionStorage.setItem("authType", "ApiKey");
-        sessionStorage.setItem("auth", "pending");
+        localStorage.setItem("authType", "ApiKey");
+        localStorage.setItem("auth", "pending");
         const endPoint = process.env.WITH_V1_API ? "/api/v1/info" : "/api/version";
         return fetch(`${API_ROOT}${endPoint}`, {
           headers: getHeaders(),
@@ -80,7 +79,7 @@ const setUpAuth = () =>
             return result; // done
           })
           .then((data) => {
-            sessionStorage.setItem("auth", "true");
+            localStorage.setItem("auth", "true");
             resolve(data);
           });
       }),
@@ -108,7 +107,7 @@ const getPlainText = (url, opts = {}) => fetchUrl(url, opts, "text/plain", "text
  * @param {"text" | "json"} parse Parse as text or json?
  */
 async function fetchUrl(url, opts = {}, accept, parse) {
-  const auth = sessionStorage.getItem("auth");
+  const auth = localStorage.getItem("auth");
   if (auth == "true") {
     opts.headers = { ...opts.headers, ...getHeaders(accept) };
     const response = await fetch(`${API_ROOT}${url}`, opts);
@@ -120,7 +119,7 @@ async function fetchUrl(url, opts = {}, accept, parse) {
 
     switch (status) {
       case 401: // Unauthorized
-        sessionStorage.setItem("auth", "false");
+        localStorage.setItem("auth", "false");
         throw result;
       case 204: // No Content
       case 304: // Not Modified
@@ -160,13 +159,13 @@ async function fetchUrl(url, opts = {}, accept, parse) {
  */
 const getFileURL = (url, opts, timestamp) =>
   new Promise((resolve, reject) => {
-    const auth = sessionStorage.getItem("auth");
+    const auth = localStorage.getItem("auth");
     if (auth == "true") {
       opts.headers = { ...getHeaders(), ...opts.headers };
       fetch(timestamp ? `${API_ROOT}${url}?ct=${timestamp}` : url, opts)
         .then((response) => {
           if (response.status == 401) {
-            sessionStorage.setItem("auth", "false");
+            localStorage.setItem("auth", "false");
             reject(response);
           }
           if (response.ok) {
