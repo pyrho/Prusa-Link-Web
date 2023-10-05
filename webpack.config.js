@@ -168,6 +168,7 @@ module.exports = (env, args) => {
     },
 
     devServer: {
+      allowedHosts: "all",
       host: "0.0.0.0",
       port: 9000,
       ...(

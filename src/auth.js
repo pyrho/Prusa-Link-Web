@@ -5,7 +5,7 @@
 import { modal } from "./printer/components/modal";
 import { handleError } from "./printer/components/errors";
 
-export const API_ROOT = window.location.pathname.endsWith('/')
+export const API_ROOT = window.location.pathname.endsWith("/")
   ? window.location.pathname.slice(0, -1)
   : window.location.pathname;
 
@@ -56,63 +56,49 @@ const getHeaders = (accept = "application/json") => {
       Accept: accept,
     };
   }
-  return { Accept: accept };
+  return { Accept: accept, Authorization: sessionStorage.getItem("authHeader") };
 };
 
 /**
  * Authenticate the browser
  */
 const setUpAuth = () =>
-  new Promise((resolve, reject) => {
-    const endPoint = process.env.WITH_V1_API ? "/api/v1/info" : "/api/version";
-    sessionStorage.setItem("auth", "pending");
-    return fetch(`${API_ROOT}${endPoint}`, {
-      headers: getHeaders(),
-    })
-      .then((response) => {
-        if (response.status == 401) {
-          const auth_type = response.headers
-            .get("WWW-Authenticate")
-            .split(" ")[0];
-          sessionStorage.setItem("authType", auth_type);
-          sessionStorage.removeItem("apiKey");
-          if (auth_type == "ApiKey") {
-            // ApiKey
-            return askApiKey().then(() =>
-              setUpAuth().then((data) => resolve(data))
-            );
-          }
-          // http-digest
-          return setUpAuth().then((data) => resolve(data));
-        } else {
-          const result = response.json();
-          if (response.status != 200) {
-            result.then((data) => handleError({ data }));
-          }
-          return result; // done
-        }
-      })
-      .then((data) => {
-        sessionStorage.setItem("auth", "true");
-        resolve(data);
-      });
-  });
+  askApiKey().then(
+    () =>
+      new Promise(async (resolve) => {
+        sessionStorage.setItem("authType", "ApiKey");
+        sessionStorage.setItem("auth", "pending");
+        const endPoint = process.env.WITH_V1_API ? "/api/v1/info" : "/api/version";
+        return fetch(`${API_ROOT}${endPoint}`, {
+          headers: getHeaders(),
+        })
+          .then((response) => {
+            const result = response.json();
+            if (response.status != 200) {
+              result.then((data) => handleError({ data }));
+            }
+            return result; // done
+          })
+          .then((data) => {
+            sessionStorage.setItem("auth", "true");
+            resolve(data);
+          });
+      }),
+  );
 
 /**
  * Async function for fetch url then call the callback with the data
  * @param {string} url
  * @param {object} opts
  */
-const getJson = (url, opts = {}) =>
-  fetchUrl(url, opts, "application/json", "json");
+const getJson = (url, opts = {}) => fetchUrl(url, opts, "application/json", "json");
 
 /**
  * Async function for fetch url then call the callback with the data
  * @param {string} url
  * @param {object} opts
  */
-const getPlainText = (url, opts = {}) =>
-  fetchUrl(url, opts, "text/plain", "text");
+const getPlainText = (url, opts = {}) => fetchUrl(url, opts, "text/plain", "text");
 
 /**
  * Async function for fetch url then call the callback with the data
@@ -188,7 +174,7 @@ const getFileURL = (url, opts, timestamp) =>
               resolve({
                 url: URL.createObjectURL(blob),
                 headers: response.headers,
-              })
+              }),
             );
           } else {
             reject(response);
@@ -214,7 +200,7 @@ const getImage = (url, timestamp, opts = {}) =>
         Accept: "image/*",
       },
     },
-    timestamp
+    timestamp,
   );
 
 /**
