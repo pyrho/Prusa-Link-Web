@@ -1,0 +1,3 @@
+- Serve the timelapses from mk4-rtsp
+    - download endpoint
+    - list endpoint

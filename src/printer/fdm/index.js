@@ -13,6 +13,7 @@ import { LinkState, translateState } from "../../state";
 import updateConnectionStatus from "../components/updateConnectionStatus";
 import { currentRoute } from "../../router";
 import { Context } from "./context";
+import timelapse from "./timelapse";
 
 export const context = new Context();
 
@@ -53,7 +54,7 @@ const fdm = {
     process.env.WITH_TIMELAPSES ? {
       path: "timelapses",
       html: require("../../views/timelapses.html"),
-      module: updatePrinterTitle(dashboard),
+      module: updatePrinterTitle(timelapse),
       getTitle: () => translate("home.timelapses"),
     }: null
       ,{
