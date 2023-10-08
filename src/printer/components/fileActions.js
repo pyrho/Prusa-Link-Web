@@ -15,7 +15,6 @@ import { setDisabled } from "../../helpers/element";
 export const downloadFile = (fileUrl, fileDisplayName, onComplete) => {
   if (process.env["WITH_API_KEY_AUTH"]) {
     getFile(fileUrl).then((result) => {
-      
       download(result.url, fileDisplayName);
     }).catch(
       (result) => handleError(result)

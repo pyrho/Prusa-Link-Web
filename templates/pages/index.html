@@ -63,5 +63,8 @@
     {% else %}
       {% include "components/temperature_graph_fdm.html" %}
     {% endif %}
+    {% if env.WITH_TIMELAPSES %}
+      {% include "components/timelapse_grid_element.html" %}
+    {% endif %}
   </body>
 </html>

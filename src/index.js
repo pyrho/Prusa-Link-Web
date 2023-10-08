@@ -9,6 +9,10 @@ if (process.env.PRINTER_TYPE == "sla") {
 if (process.env.PRINTER_CODE == "m1") {
   import("./m1-styles.css");
 }
+
+if (process.env.WITH_TIMELAPSES) {
+  import("./timelapses.css");
+}
 import { navigate, navigateShallow } from "./router.js";
 import printer from "./printer";
 import { getJson, initAuth } from "./auth.js";

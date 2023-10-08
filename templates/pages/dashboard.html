@@ -23,14 +23,15 @@
     <div id="graph"></div>
   </div>
 </div>
-<div class="main-wrapper component component-inline" id="cameras">
-  <p data-label="camera.title" class="txt-grey txt-md title">Cameras</p>
-  <div class="camera-snapshot">
-    <div id="camera-snapshot-container">
-      <iframe src="http://mk4-spy:8080/webrtc" style="border: none; width: 100%; max-width: 1280px; height: 720px;"/>
-    </div>
+
+{% if env.WITH_LIVE_FEED %}
+<div class="main-wrapper component component-inline" id="livefeed">
+  <p data-label="livefeed.title" class="txt-grey txt-md title">Live Feed</p>
+  <div class="video-aspect-ratio">
+    <iframe src="{{ env.WITH_LIVE_FEED }}"/>
   </div>
 </div>
+{% endif %}
 
 {% if env.WITH_CAMERAS %}
 <div class="main-wrapper component component-inline" id="cameras">

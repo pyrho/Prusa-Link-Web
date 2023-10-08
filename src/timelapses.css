@@ -1,0 +1,34 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* This creates 3 columns. Adjust as needed. */
+    gap: 20px; /* Spacing between the grid items */
+    padding: 20px;
+}
+
+.grid-item {
+    position: relative; /* To position the caption at the bottom of the image */
+    overflow: hidden; /* To make sure the caption doesn't extend outside the grid item */
+}
+
+.grid-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform .2s ease-in-out; /* Optional: Scale effect on hover */
+}
+
+.grid-item:hover img {
+    transform: scale(1.05); /* Optional: Scale effect on hover */
+}
+
+.caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    color: #fff; /* White text color */
+    padding: 10px;
+    text-align: center;
+}
+

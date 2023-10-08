@@ -29,6 +29,7 @@
   "btn.upgrade": "Upgrade",
   "api_key.label": "API Key",
   "camera.title": "Cameras",
+  "livefeed.title": "Live Feed",
   "camera.name": "Camera Name",
   "camera.time": "Snapshot Time",
   "camera.try-connect": "Camera is not detected. Do you want to detect it manually?",
