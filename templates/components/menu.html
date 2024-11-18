@@ -10,7 +10,7 @@
   set menu_dict = {
     'link-home': {'text': 'Dashboard', label: 'home.link', path: '#dashboard' },
     'link-proj': {'text': 'Storage', label: 'proj.link', path: '#files', condition: env.WITH_FILES },
-    'link-timelapses': {'text': 'Timelapses', label: 'home.timelapses', path: '#timelapses' },
+    'link-timelapses': {'text': 'Timelapses', label: 'home.timelapses', path: '#timelapses', condition: env.WITH_TIMELAPSES },
     'link-ctrl': {'text': 'Control', label: 'control.link', path: '#control', condition: env.WITH_CONTROLS },
     'link-cams': {'text': 'Cameras', label: 'cameras.link', path: '#cameras', condition: env.WITH_CAMERAS },
     'separator': {},

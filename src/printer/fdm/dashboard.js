@@ -2,6 +2,7 @@
 // Copyright (C) 2021 Prusa Research a.s. - www.prusa3d.com
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import * as feed from "../components/feed";
 import * as graph from "../components/temperature_graph";
 import upload from "../components/upload";
 import cameras from "../components/cameras";
@@ -15,6 +16,7 @@ import { getStatusForTitle } from "../common";
 const load = (context) => {
   translate("home.link", { query: "#title-status-label" });
   graph.render();
+  feed.render();
   update(context);
   if (process.env['WITH_CAMERAS']) {
     cameras.update(context, null);

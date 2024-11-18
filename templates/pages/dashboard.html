@@ -22,16 +22,11 @@
     <p data-label="temps.title" class="txt-grey txt-md title">Temperatures</p>
     <div id="graph"></div>
   </div>
-</div>
-
-{% if env.WITH_LIVE_FEED %}
-<div class="main-wrapper component component-inline" id="livefeed">
-  <p data-label="livefeed.title" class="txt-grey txt-md title">Live Feed</p>
-  <div class="video-aspect-ratio">
-    <iframe src="{{ env.WITH_LIVE_FEED }}"/>
+  <div class="component component-fixed">
+    <p data-label="livefeed.title" class="txt-grey txt-md title"></p>
+    <div id="live-feed"></div>
   </div>
 </div>
-{% endif %}
 
 {% if env.WITH_CAMERAS %}
 <div class="main-wrapper component component-inline" id="cameras">

@@ -66,5 +66,8 @@
     {% if env.WITH_TIMELAPSES %}
       {% include "components/timelapse_grid_element.html" %}
     {% endif %}
+    {% if env.WITH_LIVE_FEED.length > 0 %}
+      {% include "components/live_feed.html" %}
+    {% endif %}
   </body>
 </html>

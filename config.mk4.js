@@ -4,6 +4,7 @@ module.exports = (env, args) => {
     const config = {
         PRINTER_TYPE: "fdm",
 
+        WITH_LIVE_FEED: ["http://prusaberry.lan:8000/index.html", "http://prusaberry.lan:8025/stream"],
         WITH_STORAGES: ["usb"],
         WITH_FILES: true,
         WITH_SETTINGS: false,
